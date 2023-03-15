@@ -18,10 +18,6 @@
 
 body {
   margin: 0;
-  display: flex;
-  justify-content: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
 * {
@@ -30,15 +26,26 @@ body {
   box-sizing: border-box;
 }
 
+#root {
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+}
+
 .board {
-  width: fit-content;
-  margin: 40px auto;
+  width: 100%;
+  min-height: 100vh;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .board h1 {
   color: #eee;
-  margin-bottom: 16px;
+  margin-bottom: 2em;
 }
 
 .board button {
