@@ -6,21 +6,54 @@ import { PLAYERS } from "./constants";
 const initialBoard = Array(9).fill(null);
 const { playerOne, playerTwo } = PLAYERS; // destructuring the two players
 
+const WINNING_COMBOS = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
 function App() {
   const [board, setBoard] = useState(initialBoard);
   const [turn, setTurn] = useState(playerOne); // turn can be playerOne or playerTwo.
+  const [winner, setWinner] = useState(null); // null = no winner, false = tie
 
-  // this function is called everytime a cell is clicked:
+  const resetGame = () => {
+    setBoard(initialBoard);
+    setWinner(null);
+    setTurn(playerOne);
+  };
 
+  //Function checkWinner will be called by function updateBoard:
+  const checkWinner = (boardToCheck) => {
+    // check all the winning combos to see if there is a winner, if not, return null:
+    for (const combo of WINNING_COMBOS) {
+      const [a, b, c] = combo;
+
+      if (
+        boardToCheck[a] &&
+        boardToCheck[a] === boardToCheck[b] &&
+        boardToCheck[a] === boardToCheck[c]
+      ) {
+        return board[a]; // return de value of first position of the combo and this one will be the winner
+      }
+    }
+    return null; // if there is no winner return null
+  };
+
+  // Function updateBoard is called everytime a cell is clicked:
   const updateBoard = (cellNumber) => {
-    // (cellNumber is the same as the index of the array "board")
+    // (cellNumber is the same as the index number of the array "board")
 
     // Prevent from updating the board if the clicked cell already has a value:
-    if (board[cellNumber]) return;
-    // (if the element in this position of the array board is true: return)
-    // (the default of the cell is null, so if now already has value is because a player already clicked the cell before)
+    if (board[cellNumber] || winner) return; // if element is true, return (the default of the cell is null (false),
+    // so if now already has a value (true) is because a player already clicked the cell before)
     // We should prevent any of the two players from changing the cell value again,
-    // and this is easy to do with just an early return of this function.
+    // and this is easy to do with just an early return of this updateBoard function.
 
     const newBoard = [...board];
     // ↑ copying the previous board state because we never have to mutate the state
@@ -35,9 +68,17 @@ function App() {
     // so with this we update that specific cell/index with playerOne or playerTwo
     // if necessary, instead of spread operator we can use structuredClone()
 
-    setBoard(newBoard); // now we update the UI board with the updated board
+    // Now we update state board (the UI board) with the new updated board
+    setBoard(newBoard);
 
-    // update the turn:
+    // Once we update the board, we should check if we have a winner
+    // (we still have to use the newBoard because the "board" state is not updated yet in the current render):
+    const newWinner = checkWinner(newBoard);
+
+    if (newWinner) {
+      setWinner(newWinner);
+    }
+
     const newTurn = turn === playerOne ? playerTwo : playerOne;
     setTurn(newTurn);
   };
@@ -63,6 +104,17 @@ function App() {
           <Square isSelected={turn === playerTwo}>{playerTwo}</Square>
         </div>
       </section>
+
+      {winner !== null && (
+        <section className="winner">
+          <div className="text">
+            {winner === false ? "Tie" : "The winner is " + winner}
+          </div>
+          <div>
+            <button onClick={resetGame}>Start a new game!</button>
+          </div>
+        </section>
+      )}
     </main>
   );
 }
