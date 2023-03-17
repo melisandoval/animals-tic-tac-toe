@@ -1,8 +1,16 @@
 import React from "react";
 
-export function Square({ children, updateBoard, index }) {
+export function Square(props) {
+  const { children, isSelected, updateBoard, cellNumber } = props;
+
+  const className = `square ${isSelected ? "is-selected" : ""}`;
+
+  const handleSquareClick = () => {
+    updateBoard(cellNumber);
+  };
+
   return (
-    <div className="square" key={index}>
+    <div onClick={handleSquareClick} className={className} key={cellNumber}>
       <span>{children}</span>
     </div>
   );

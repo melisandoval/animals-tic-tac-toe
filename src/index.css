@@ -72,13 +72,24 @@ body {
   gap: 10px;
 }
 
+.turn-section {
+  display: flex;
+  margin-top: 3em;
+  gap: 1em;
+  align-items: center;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-block-start: 0em;
+  margin-block-end: 0em;
+}
+
 .turn {
   display: flex;
   justify-content: center;
-  margin: 15px auto;
   width: fit-content;
   position: relative;
-  border-radius: 10px;
 }
 
 .turn .square,
