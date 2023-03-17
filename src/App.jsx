@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { Square } from "./components/Square";
 import { PLAYERS } from "./constants";
+import confetti from "canvas-confetti";
 
 const initialBoard = Array(9).fill(null);
 const { playerOne, playerTwo } = PLAYERS; // destructuring the two players
@@ -45,6 +46,12 @@ function App() {
     return null; // if there is no winner return null
   };
 
+  const checkEndGame = (newBoard) => {
+    return newBoard.every((square) => square !== null);
+    // if all are not null the return will be true
+    // if every square is not null, it means that the game already ended
+  };
+
   // Function updateBoard is called everytime a cell is clicked:
   const updateBoard = (cellNumber) => {
     // (cellNumber is the same as the index number of the array "board")
@@ -76,7 +83,10 @@ function App() {
     const newWinner = checkWinner(newBoard);
 
     if (newWinner) {
+      confetti();
       setWinner(newWinner);
+    } else if (checkEndGame(newBoard)) {
+      setWinner(false);
     }
 
     const newTurn = turn === playerOne ? playerTwo : playerOne;
@@ -85,7 +95,10 @@ function App() {
 
   return (
     <main className="board">
-      <h1>Tic Tac Toe</h1>
+      <header>
+        <h1>Tic Tac Toe</h1>
+        <button onClick={resetGame}>Reset game</button>
+      </header>
 
       <section className="game">
         {board.map((element, index) => {
@@ -108,7 +121,9 @@ function App() {
       {winner !== null && (
         <section className="winner">
           <div className="text">
-            {winner === false ? "Tie" : "The winner is " + winner}
+            {winner === false
+              ? "There was been a tie"
+              : "The winner is " + winner}
           </div>
           <div>
             <button onClick={resetGame}>Start a new game!</button>

@@ -43,9 +43,14 @@ body {
   justify-content: center;
 }
 
-.board h1 {
-  color: #eee;
+header {
   margin-bottom: 2em;
+}
+
+h1 {
+  color: #eee;
+  font-size: 3rem;
+  padding: 1em;
 }
 
 .board button {
@@ -59,6 +64,7 @@ body {
   transition: 0.2s;
   font-weight: bold;
   cursor: pointer;
+  background-color: #242424;
 }
 
 .board button:hover {
@@ -114,11 +120,12 @@ h2 {
   display: grid;
   place-items: center;
   align-content: center;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: #242424;
 }
 
 .winner .text {
-  background: #111;
+  font-size: 2rem;
+  background-color: #242424;
   height: 300px;
   width: 320px;
   border: 2px solid #eee;
@@ -140,8 +147,8 @@ h2 {
 }
 
 .square {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border: 2px solid #eee;
   border-radius: 5px;
   display: grid;
