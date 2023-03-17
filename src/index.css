@@ -108,7 +108,7 @@ h2 {
 
 .square.is-selected {
   color: #fff;
-  background: #09f;
+  background-color: #eee;
 }
 
 .winner {

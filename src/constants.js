@@ -1,6 +1,6 @@
 export const PLAYERS = {
-  playerOne: "X",
-  playerTwo: "O",
+  playerOne: "🦊",
+  playerTwo: "🐻",
 };
 
 export const WINNING_COMBOS = [
