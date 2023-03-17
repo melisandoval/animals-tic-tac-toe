@@ -1,63 +1,31 @@
-import { useState } from "react";
 import "./App.css";
-import { Square } from "./components/Square";
-import { PLAYERS } from "./constants";
+import { useState } from "react";
 import confetti from "canvas-confetti";
+import { PLAYERS, INITIAL_BOARD } from "./constants";
+import { checkWinner, checkEndGame } from "./utils/board.js";
+import { Square } from "./components/Square";
+import { WinnerModal } from "./components/WinnerModal";
 
-const initialBoard = Array(9).fill(null);
-const { playerOne, playerTwo } = PLAYERS; // destructuring the two players
-
-const WINNING_COMBOS = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-];
+const { playerOne, playerTwo } = PLAYERS; // destructuring the two players from the constant PLAYERS.
 
 function App() {
-  const [board, setBoard] = useState(initialBoard);
+  const [board, setBoard] = useState(INITIAL_BOARD);
   const [turn, setTurn] = useState(playerOne); // turn can be playerOne or playerTwo.
   const [winner, setWinner] = useState(null); // null = no winner, false = tie
 
   const resetGame = () => {
-    setBoard(initialBoard);
+    setBoard(INITIAL_BOARD);
     setWinner(null);
     setTurn(playerOne);
   };
 
-  //Function checkWinner will be called by function updateBoard:
-  const checkWinner = (boardToCheck) => {
-    // check all the winning combos to see if there is a winner, if not, return null:
-    for (const combo of WINNING_COMBOS) {
-      const [a, b, c] = combo;
-
-      if (
-        boardToCheck[a] &&
-        boardToCheck[a] === boardToCheck[b] &&
-        boardToCheck[a] === boardToCheck[c]
-      ) {
-        return board[a]; // return de value of first position of the combo and this one will be the winner
-      }
-    }
-    return null; // if there is no winner return null
-  };
-
-  const checkEndGame = (newBoard) => {
-    return newBoard.every((square) => square !== null);
-    // if all are not null the return will be true
-    // if every square is not null, it means that the game already ended
-  };
-
-  // Function updateBoard is called everytime a cell is clicked:
+  // Function updateBoard is called everytime a cell is clicked on Square component:
   const updateBoard = (cellNumber) => {
     // (cellNumber is the same as the index number of the array "board")
 
     // Prevent from updating the board if the clicked cell already has a value:
-    if (board[cellNumber] || winner) return; // if element is true, return (the default of the cell is null (false),
+    if (board[cellNumber] || winner) return;
+    // if element is true, return (the default of the cell is null (false),
     // so if now already has a value (true) is because a player already clicked the cell before)
     // We should prevent any of the two players from changing the cell value again,
     // and this is easy to do with just an early return of this updateBoard function.
@@ -118,18 +86,7 @@ function App() {
         </div>
       </section>
 
-      {winner !== null && (
-        <section className="winner">
-          <div className="text">
-            {winner === false
-              ? "There was been a tie"
-              : "The winner is " + winner}
-          </div>
-          <div>
-            <button onClick={resetGame}>Start a new game!</button>
-          </div>
-        </section>
-      )}
+      <WinnerModal winner={winner} resetGame={resetGame} />
     </main>
   );
 }
