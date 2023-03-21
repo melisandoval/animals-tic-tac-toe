@@ -95,7 +95,7 @@ function App() {
   return (
     <main className="board">
       <header>
-        <h1>Tic - Tac - Toe !</h1>
+        <h1>Animals Tic-Tac-Toe!</h1>
         <button onClick={resetGame}>Reset game</button>
       </header>
 
