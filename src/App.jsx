@@ -1,7 +1,7 @@
 import "./App.css";
 import { useState } from "react";
 import confetti from "canvas-confetti";
-import { PLAYERS, INITIAL_BOARD } from "./constants";
+import { PLAYERS, INITIAL_EMPTY_BOARD } from "./constants";
 import { checkWinner, checkEndGame } from "./utils/board.js";
 import { Square } from "./components/Square";
 import { WinnerModal } from "./components/WinnerModal";
@@ -9,14 +9,40 @@ import { WinnerModal } from "./components/WinnerModal";
 const { playerOne, playerTwo } = PLAYERS; // destructuring the two players from the constant PLAYERS.
 
 function App() {
-  const [board, setBoard] = useState(INITIAL_BOARD);
-  const [turn, setTurn] = useState(playerOne); // turn can be playerOne or playerTwo.
+  // Create BOARD state:
+  const [board, setBoard] = useState(() => {
+    // VERY IMPORTANT read from localStorafe INSIDE useState*:
+    const boardFromStorage = window.localStorage.getItem("board");
+    // *(NEVER read the local storage outside useState and inside the component body because that will cause
+    // the reading of localStorage in EVERY render of the component! That is slow, synchronous and blocks the rest of the code):
+
+    // Then: if we have something in localStorage set state with that, if not, use initial empty board:
+    return boardFromStorage
+      ? JSON.parse(boardFromStorage)
+      : INITIAL_EMPTY_BOARD;
+  });
+
+  // Create TURN state:
+  const [turn, setTurn] = useState(() => {
+    const turnFromStorage = window.localStorage.getItem("turn");
+    // if we have a turn from localStorage from a previous game return that, if not, set one player one as the first:
+    console.log(turnFromStorage);
+    return JSON.parse(turnFromStorage) ?? playerOne; // Nullish coalescing operator: ??
+  }); // turn can be playerOne or playerTwo.
+
+  // Create WINNER state:
   const [winner, setWinner] = useState(null); // null = no winner, false = tie
 
+  // Function resetGame is called by "Start new game" button and "Reset game" button:
   const resetGame = () => {
-    setBoard(INITIAL_BOARD);
+    setBoard(INITIAL_EMPTY_BOARD);
     setWinner(null);
     setTurn(playerOne);
+
+    // IMPORTANT! Reset localStorage too! (is best practice to use removeItem() and remove the SPECIFIC things that we need,
+    // instead of using localStorage.clear() and remove everything. Just in case is best to use removeItem())
+    window.localStorage.removeItem("board");
+    window.localStorage.removeItem("turn");
   };
 
   // Function updateBoard is called everytime a cell is clicked on Square component:
@@ -45,8 +71,16 @@ function App() {
 
     // Now we update state board (the UI board) with the new updated board
     setBoard(newBoard);
+    // Save current game in localstorage:
+    window.localStorage.setItem("board", JSON.stringify(newBoard));
 
-    // Once we update the board, we should check if we have a winner
+    // set the next turn:
+    const newTurn = turn === playerOne ? playerTwo : playerOne;
+    setTurn(newTurn);
+    // save in local storage the new turn:
+    window.localStorage.setItem("turn", JSON.stringify(newTurn));
+
+    // Check if we have a winner
     // (we still have to use the newBoard because the "board" state is not updated yet in the current render):
     const newWinner = checkWinner(newBoard);
 
@@ -56,9 +90,6 @@ function App() {
     } else if (checkEndGame(newBoard)) {
       setWinner(false);
     }
-
-    const newTurn = turn === playerOne ? playerTwo : playerOne;
-    setTurn(newTurn);
   };
 
   return (
@@ -69,7 +100,7 @@ function App() {
       </header>
 
       <section className="game">
-        {board.map((element, index) => {
+        {board?.map((element, index) => {
           return (
             <Square key={index} cellNumber={index} updateBoard={updateBoard}>
               {element}

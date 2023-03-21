@@ -14,4 +14,4 @@ export const WINNING_COMBOS = [
   [2, 4, 6],
 ];
 
-export const INITIAL_BOARD = Array(9).fill(null);
+export const INITIAL_EMPTY_BOARD = Array(9).fill(null);
