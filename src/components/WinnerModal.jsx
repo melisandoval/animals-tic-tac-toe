@@ -1,16 +1,22 @@
 import React from "react";
+import { Square } from "./Square";
 
 export function WinnerModal({ winner, resetGame }) {
   if (winner === null) return null;
 
-  const winnerText =
-    winner === false ? "There was been a tie" : "The winner is " + winner;
-
   return (
     <section className="winner">
-      <div className="text">{winnerText}</div>
-      <div>
-        <button onClick={resetGame}>Start a new game!</button>
+      <div className="text">
+        {!winner && <h2>There was been a tie 🙊 </h2>}
+        {winner && (
+          <div className="winner-modal-content">
+            <h2>The winner is:</h2>
+            <Square> {winner}</Square>
+          </div>
+        )}
+        <button onClick={resetGame} className="winner-modal-button">
+          Start a new game!
+        </button>
       </div>
     </section>
   );

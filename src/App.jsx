@@ -22,16 +22,16 @@ function App() {
       : INITIAL_EMPTY_BOARD;
   });
 
-  // Create TURN state:
+  // Create TURN state (turn can be playerOne or playerTwo):
   const [turn, setTurn] = useState(() => {
     const turnFromStorage = window.localStorage.getItem("turn");
     // if we have a turn from localStorage from a previous game return that, if not, set one player one as the first:
     console.log(turnFromStorage);
     return JSON.parse(turnFromStorage) ?? playerOne; // Nullish coalescing operator: ??
-  }); // turn can be playerOne or playerTwo.
+  });
 
   // Create WINNER state:
-  const [winner, setWinner] = useState(null); // null = no winner, false = tie
+  const [winner, setWinner] = useState(null); // null = no winner, false = tie, playerOne or PlayerTwo
 
   // Function resetGame is called by "Start new game" button and "Reset game" button:
   const resetGame = () => {
@@ -95,7 +95,7 @@ function App() {
   return (
     <main className="board">
       <header>
-        <h1>Tic Tac Toe</h1>
+        <h1>Tic - Tac - Toe !</h1>
         <button onClick={resetGame}>Reset game</button>
       </header>
 
@@ -112,8 +112,8 @@ function App() {
       <section className="turn-section">
         <h2>Turn:</h2>
         <div className="turn">
-          <Square isSelected={turn === playerOne}>{playerOne}</Square>
-          <Square isSelected={turn === playerTwo}>{playerTwo}</Square>
+          {turn === playerOne && <h2>{playerOne}</h2>}
+          {turn === playerTwo && <h2>{playerTwo}</h2>}
         </div>
       </section>
 
