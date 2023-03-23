@@ -86,8 +86,9 @@ function App() {
           <button onClick={resetGame}>Reset game</button>
         </section>
       </header>
+
       <main className="board">
-        <section className="game">
+        <ol className="game">
           {board?.map((element, index) => {
             return (
               <Square key={index} cellNumber={index} updateBoard={updateBoard}>
@@ -95,7 +96,7 @@ function App() {
               </Square>
             );
           })}
-        </section>
+        </ol>
 
         <section className="turn-section">
           <h2>

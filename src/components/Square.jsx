@@ -10,8 +10,8 @@ export function Square(props) {
   };
 
   return (
-    <div onClick={handleSquareClick} className={className} key={cellNumber}>
+    <li onClick={handleSquareClick} className={className} key={cellNumber}>
       <span>{children}</span>
-    </div>
+    </li>
   );
 }
