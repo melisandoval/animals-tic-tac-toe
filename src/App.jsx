@@ -10,17 +10,15 @@ import { WinnerModal } from "./components/WinnerModal";
 function App() {
   // Set the two emogis animals players for the game:
   const [players, setPlayers] = useState(getRandomPlayers());
-
   // Create BOARD state:
   const [board, setBoard] = useState(INITIAL_EMPTY_BOARD);
-
   // Create TURN state (turn can be playerOne or playerTwo):
   const [turn, setTurn] = useState(players?.playerOne);
 
   // Create WINNER state:
-  const [winner, setWinner] = useState(null);
-  // null = no winner, false = tie, playerOne or PlayerTwo
+  const [winner, setWinner] = useState(null); // null = no winner, false = tie, playerOne or PlayerTwo
 
+  // every time players change, update the state turn:
   useEffect(() => {
     setTurn(players.playerOne);
   }, [players]);
