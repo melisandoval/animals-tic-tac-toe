@@ -1,48 +1,35 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
-import { PLAYERS, INITIAL_EMPTY_BOARD } from "./constants";
+import { INITIAL_EMPTY_BOARD } from "./constants";
+import { getRandomPlayers } from "./utils/players";
 import { checkWinner, checkEndGame } from "./utils/board.js";
 import { Square } from "./components/Square";
 import { WinnerModal } from "./components/WinnerModal";
 
-const { playerOne, playerTwo } = PLAYERS; // destructuring the two players from the constant PLAYERS.
-
 function App() {
-  // Create BOARD state:
-  const [board, setBoard] = useState(() => {
-    // VERY IMPORTANT read from localStorafe INSIDE useState*:
-    const boardFromStorage = window.localStorage.getItem("board");
-    // *(NEVER read the local storage outside useState and inside the component body because that will cause
-    // the reading of localStorage in EVERY render of the component! That is slow, synchronous and blocks the rest of the code):
+  // Set the two emogis animals players for the game:
+  const [players, setPlayers] = useState(getRandomPlayers());
 
-    // Then: if we have something in localStorage set state with that, if not, use initial empty board:
-    return boardFromStorage
-      ? JSON.parse(boardFromStorage)
-      : INITIAL_EMPTY_BOARD;
-  });
+  // Create BOARD state:
+  const [board, setBoard] = useState(INITIAL_EMPTY_BOARD);
 
   // Create TURN state (turn can be playerOne or playerTwo):
-  const [turn, setTurn] = useState(() => {
-    const turnFromStorage = window.localStorage.getItem("turn");
-    // if we have a turn from localStorage from a previous game return that, if not, set one player one as the first:
-    console.log(turnFromStorage);
-    return JSON.parse(turnFromStorage) ?? playerOne; // Nullish coalescing operator: ??
-  });
+  const [turn, setTurn] = useState(players?.playerOne);
 
   // Create WINNER state:
-  const [winner, setWinner] = useState(null); // null = no winner, false = tie, playerOne or PlayerTwo
+  const [winner, setWinner] = useState(null);
+  // null = no winner, false = tie, playerOne or PlayerTwo
 
-  // Function resetGame is called by "Start new game" button and "Reset game" button:
+  useEffect(() => {
+    setTurn(players.playerOne);
+  }, [players]);
+
+  // Function resetGame is called by "Reset game" button and "Start new game" (winner modal) button:
   const resetGame = () => {
+    setPlayers(getRandomPlayers());
     setBoard(INITIAL_EMPTY_BOARD);
     setWinner(null);
-    setTurn(playerOne);
-
-    // IMPORTANT! Reset localStorage too! (is best practice to use removeItem() and remove the SPECIFIC things that we need,
-    // instead of using localStorage.clear() and remove everything. Just in case is best to use removeItem())
-    window.localStorage.removeItem("board");
-    window.localStorage.removeItem("turn");
   };
 
   // Function updateBoard is called everytime a cell is clicked on Square component:
@@ -71,14 +58,11 @@ function App() {
 
     // Now we update state board (the UI board) with the new updated board
     setBoard(newBoard);
-    // Save current game in localstorage:
-    window.localStorage.setItem("board", JSON.stringify(newBoard));
 
     // set the next turn:
-    const newTurn = turn === playerOne ? playerTwo : playerOne;
+    const newTurn =
+      turn === players.playerOne ? players.playerTwo : players.playerOne;
     setTurn(newTurn);
-    // save in local storage the new turn:
-    window.localStorage.setItem("turn", JSON.stringify(newTurn));
 
     // Check if we have a winner
     // (we still have to use the newBoard because the "board" state is not updated yet in the current render):
@@ -93,32 +77,42 @@ function App() {
   };
 
   return (
-    <main className="board">
+    <div className="page-container">
       <header>
         <h1>Animals Tic-Tac-Toe!</h1>
-        <button onClick={resetGame}>Reset game</button>
+        <section className="header-players-and-button">
+          <p>
+            Players: <span>{players.playerOne} </span>
+            <span>{players.playerTwo}</span>
+          </p>
+          <button onClick={resetGame}>Reset game</button>
+        </section>
       </header>
+      <main className="board">
+        <section className="game">
+          {board?.map((element, index) => {
+            return (
+              <Square key={index} cellNumber={index} updateBoard={updateBoard}>
+                {element}
+              </Square>
+            );
+          })}
+        </section>
 
-      <section className="game">
-        {board?.map((element, index) => {
-          return (
-            <Square key={index} cellNumber={index} updateBoard={updateBoard}>
-              {element}
-            </Square>
-          );
-        })}
-      </section>
+        <section className="turn-section">
+          <h2>
+            Turn:
+            {turn === players?.playerOne ? (
+              <span>{players.playerOne}</span>
+            ) : (
+              <span>{players.playerTwo}</span>
+            )}
+          </h2>
+        </section>
 
-      <section className="turn-section">
-        <h2>Turn:</h2>
-        <div className="turn">
-          {turn === playerOne && <h2>{playerOne}</h2>}
-          {turn === playerTwo && <h2>{playerTwo}</h2>}
-        </div>
-      </section>
-
-      <WinnerModal winner={winner} resetGame={resetGame} />
-    </main>
+        <WinnerModal winner={winner} resetGame={resetGame} />
+      </main>
+    </div>
   );
 }
 

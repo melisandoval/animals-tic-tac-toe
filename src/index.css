@@ -7,7 +7,6 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
   background-color: green;
 
   font-synthesis: none;
@@ -43,40 +42,75 @@ body {
   padding: 0;
 }
 
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.119);
+}
+
 .board {
   width: 100%;
-  min-height: 100vh;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 1em 1em 2em;
 }
 
 header {
-  margin-bottom: 1em;
-  padding: 0.5em;
+  padding: 3em 0.5em 1em;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.header-players-and-button {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  background-color: var(--black);
+  border-radius: 0.4em;
+  padding: 1em 1.5em;
+  gap: 1em;
+  margin: 1em 0.5em 0;
+}
+
+header p {
+  color: white;
+  font-size: 1.6rem;
+  line-height: 1.5em;
+  display: flex;
+  gap: 0.6em;
+  align-items: center;
+}
+
+header p span {
+  background-color: rgba(255, 255, 255, 0.096);
+  padding: 0.2em 0.3em;
+  border-radius: 50%;
+  font-size: 2rem;
+}
+
 h1 {
+  max-width: 100%;
   color: var(--black);
   text-shadow: 0.08em 0.03em white;
-  font-size: 4rem;
-  padding: 0.1em;
+  font-size: calc(4vw + 2rem);
   line-height: normal;
   font-family: "Fredoka One", cursive;
   width: max-content;
-  backdrop-filter: blur(4px);
   text-align: center;
+  padding: 0.2em 0.4em;
+  background-color: var(--yellow);
+  border-radius: 0.03em;
 }
 
-.board button {
+button {
   padding: 0.5em 1em;
-  margin: 25px;
   background: transparent;
   border: 2px solid white;
   color: white;
@@ -89,7 +123,7 @@ h1 {
   font-size: 1.1rem;
 }
 
-.board button:hover {
+header button:hover {
   border: 2px solid black;
   background-color: var(--yellow);
   color: var(--black);
@@ -112,21 +146,24 @@ h1 {
   background-color: var(--yellow);
 }
 
+.turn-section h2 span {
+  background-color: rgba(255, 255, 255, 0.469);
+  padding: 0.2em 0.3em;
+  border-radius: 50%;
+  font-size: 2rem;
+  margin-left: 0.5em;
+}
+
 h2 {
   font-size: 2.4rem;
-  margin-block-start: 0em;
-  margin-block-end: 0em;
 }
 
-.turn {
-  display: flex;
-  justify-content: center;
-  width: fit-content;
-  position: relative;
-  gap: 1em;
+.winner h2 {
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  color: white;
 }
 
-.turn .square,
 .winner .square {
   width: 70px;
   height: 70px;
@@ -150,6 +187,7 @@ h2 {
   place-items: center;
   align-content: center;
   background-image: url("./assets/background.jpg");
+  background-color: rgba(0, 0, 0, 0.119);
   background-size: cover;
 }
 
@@ -157,23 +195,23 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2em;
+  gap: 1em;
   padding: 1em;
 }
 
 .winner-modal-button {
   font-size: 1.3rem;
   text-align: center;
-  /* max-width: 100% !important; */
   width: 100% !important;
   margin: 1em !important;
   padding: 1em !important;
-  background-color: var(--green) !important;
+  background-color: var(--yellow) !important;
   color: var(--black) !important;
 }
 
 .winner-modal-button:hover {
-  border: 2px solid var(--green) !important;
+  border: 2px solid white !important;
+  background-color: var(--green) !important;
 }
 
 .winner .text {

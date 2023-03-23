@@ -1,8 +1,3 @@
-export const PLAYERS = {
-  playerOne: "🦊",
-  playerTwo: "🐻",
-};
-
 export const WINNING_COMBOS = [
   [0, 1, 2],
   [3, 4, 5],
