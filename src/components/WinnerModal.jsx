@@ -7,7 +7,7 @@ export function WinnerModal({ winner, resetGame }) {
   return (
     <section className="winner">
       <div className="text">
-        {!winner && <h2>There was been a tie 🙊 </h2>}
+        {!winner && <h2>There has been a tie 🙊 </h2>}
         {winner && (
           <div className="winner-modal-content">
             <h2>The winner is:</h2>
