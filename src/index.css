@@ -8,6 +8,7 @@
 
   color-scheme: light dark;
   background-color: green;
+  background-color: rgba(0, 0, 0, 0.119);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -40,6 +41,8 @@ body {
   width: 100%;
   min-height: 100vh;
   padding: 0;
+  display: grid;
+  place-items: center;
 }
 
 .page-container {
@@ -47,7 +50,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.119);
+  padding: 0 1em;
 }
 
 .board {
@@ -57,11 +60,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1em 1em 2em;
+  padding: 1em 0 2em;
 }
 
 header {
-  padding: 3em 0.5em 1em;
+  padding-top: 2em;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -69,19 +72,21 @@ header {
 }
 
 .header-players-and-button {
+  margin-top: 0.6em;
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   background-color: var(--black);
   border-radius: 0.4em;
-  padding: 1em 1.5em;
   gap: 1em;
-  margin: 1em 0.5em 0;
+  width: 100%;
+  padding: 1em;
 }
 
 header p {
   color: white;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   line-height: 1.5em;
   display: flex;
   gap: 0.6em;
@@ -96,17 +101,16 @@ header p span {
 }
 
 h1 {
-  max-width: 100%;
+  width: 100%;
   color: var(--black);
   text-shadow: 0.08em 0.03em white;
-  font-size: calc(4vw + 2rem);
+  font-size: 3rem;
   line-height: normal;
   font-family: "Fredoka One", cursive;
-  width: max-content;
   text-align: center;
   padding: 0.2em 0.4em;
   background-color: var(--yellow);
-  border-radius: 0.03em;
+  border-radius: 0.04em;
 }
 
 button {
@@ -132,18 +136,23 @@ header button:hover {
 .board .game {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 0.5em;
 }
 
 .turn-section {
   display: flex;
-  margin-top: 2em;
+  justify-content: center;
   gap: 1em;
   align-items: center;
   color: var(--black);
   padding: 1.4em;
   border-radius: 0.4em;
   background-color: var(--yellow);
+  margin-bottom: 1em;
+}
+
+.turn-section h2 {
+  font-size: 1.6rem;
 }
 
 .turn-section h2 span {
@@ -155,7 +164,7 @@ header button:hover {
 }
 
 h2 {
-  font-size: 2.4rem;
+  font-size: 1.6rem;
 }
 
 .winner h2 {
@@ -238,13 +247,24 @@ h2 {
 }
 
 .square {
-  width: 80px;
-  height: 80px;
+  width: 26vw;
+  max-width: 100px;
+  aspect-ratio: 1/1;
   border: 2px solid white;
   background-color: white;
   border-radius: 5px;
   display: grid;
   place-items: center;
   cursor: pointer;
-  font-size: 48px;
+  font-size: 3rem;
+}
+
+@media (min-width: 768px) {
+  .header-players-and-button {
+    flex-direction: row;
+  }
+
+  .board .game {
+    gap: 1em;
+  }
 }

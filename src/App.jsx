@@ -88,16 +88,6 @@ function App() {
       </header>
 
       <main className="board">
-        <ol className="game">
-          {board?.map((element, index) => {
-            return (
-              <Square key={index} cellNumber={index} updateBoard={updateBoard}>
-                {element}
-              </Square>
-            );
-          })}
-        </ol>
-
         <section className="turn-section">
           <h2>
             Turn:
@@ -108,6 +98,16 @@ function App() {
             )}
           </h2>
         </section>
+
+        <ol className="game">
+          {board?.map((element, index) => {
+            return (
+              <Square key={index} cellNumber={index} updateBoard={updateBoard}>
+                {element}
+              </Square>
+            );
+          })}
+        </ol>
 
         <WinnerModal winner={winner} resetGame={resetGame} />
       </main>
