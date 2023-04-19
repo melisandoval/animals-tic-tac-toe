@@ -6,6 +6,7 @@ import { getRandomPlayers } from "./utils/players";
 import { checkWinner, checkEndGame } from "./utils/board.js";
 import { Square } from "./components/Square";
 import { WinnerModal } from "./components/WinnerModal";
+import { Footer } from "./components/Footer";
 
 function App() {
   // Set the two emogis animals players for the game:
@@ -75,42 +76,50 @@ function App() {
   };
 
   return (
-    <div className="page-container">
-      <header>
-        <h1>Animals Tic-Tac-Toe!</h1>
-        <section className="header-players-and-button">
-          <p>
-            Players: <span>{players.playerOne} </span>
-            <span>{players.playerTwo}</span>
-          </p>
-          <button onClick={resetGame}>Reset game</button>
-        </section>
-      </header>
-
-      <main className="board">
-        <section className="turn-section">
-          <h2>
-            Turn:
-            {turn === players?.playerOne ? (
-              <span>{players.playerOne}</span>
-            ) : (
+    <div className="app">
+      <div className="page-content-container">
+        <header>
+          <h1>Animals Tic-Tac-Toe!</h1>
+          <section className="header-players-and-button">
+            <p>
+              Players: <span>{players.playerOne} </span>
               <span>{players.playerTwo}</span>
-            )}
-          </h2>
-        </section>
+            </p>
+            <button onClick={resetGame}>Reset game</button>
+          </section>
+        </header>
 
-        <ol className="game">
-          {board?.map((element, index) => {
-            return (
-              <Square key={index} cellNumber={index} updateBoard={updateBoard}>
-                {element}
-              </Square>
-            );
-          })}
-        </ol>
+        <main className="board">
+          <section className="turn-section">
+            <h2>
+              Turn:
+              {turn === players?.playerOne ? (
+                <span>{players.playerOne}</span>
+              ) : (
+                <span>{players.playerTwo}</span>
+              )}
+            </h2>
+          </section>
 
-        <WinnerModal winner={winner} resetGame={resetGame} />
-      </main>
+          <ol className="game">
+            {board?.map((element, index) => {
+              return (
+                <Square
+                  key={index}
+                  cellNumber={index}
+                  updateBoard={updateBoard}
+                >
+                  {element}
+                </Square>
+              );
+            })}
+          </ol>
+
+          <WinnerModal winner={winner} resetGame={resetGame} />
+        </main>
+      </div>
+
+      <Footer />
     </div>
   );
 }
